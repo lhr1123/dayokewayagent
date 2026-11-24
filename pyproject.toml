@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools==80.9.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "b01-task1-agent"
+version = "0.1.0"
+description = "LangGraph workflow for B01 trajectory questions"
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "httpx==0.28.1",
+    "langgraph==1.2.24",
+    "numpy==2.5.5",
+    "pydantic==2.14.4",
+    "shapely==2.2.0",
+]
+
+[project.scripts]
+task1-agent = "task1_agent.__main__:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

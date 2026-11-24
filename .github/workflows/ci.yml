@@ -1,0 +1,28 @@
+name: Offline tests
+
+on: [push, pull_request]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install locked dependencies
+        run: |
+          python -m pip install uv==0.8.0
+          uv sync --locked --python 3.12
+      - name: Run offline tests
+        run: uv run --no-sync python -m unittest discover -s tests -v
+      - name: Run installed CLI on synthetic examples
+        run: |
+          uv run --no-sync task1-agent demo --case segment --offline
+          uv run --no-sync task1-agent demo --case region --offline
